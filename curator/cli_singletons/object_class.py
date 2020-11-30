@@ -185,8 +185,9 @@ class cli_action():
             elif self.action in ['cluster_routing', 'create_index', 'rollover']:
                 action_obj = self.action_class(self.client, *self.action_args, **self.action_kwargs)
             else:
-                self.get_list_object()
-                self.do_filters()
+                if not (self.action == 'reindex' and self.options['source']['index'] == 'REINDEX_SELECTION'):
+                    self.get_list_object()
+                    self.do_filters()
                 self.logger.debug('OPTIONS = {0}'.format(self.options))
                 action_obj = self.action_class(self.list_object, **self.options)
             try:
